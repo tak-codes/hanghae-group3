@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>reservation</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+
+
+    <script>
+       function getReady() {
+
+           let checkIn = $('#checkIn').val(); //checkIn 읽어오기
+           let checkOut = $('#checkOut').val(); //checkOut 읽어오기
+           let room = $('#roomName').val(); //방이름 읽어오기
+           let id = $('#id').val();
+           const keys = {
+               "체크인": checkIn,
+               "체크아웃": checkOut,
+               "객실": room,
+               "로그인": id
+           }
+           if (checkIn && checkOut && room && id){
+
+                $.ajax({
+                    type: "POST",
+                    url: "/reservation",
+                    data: {checkIn_give:checkIn,checkOut_give:checkOut,room_give:room,id_give:id},
+                    success: function (response) {
+                           alert('예약 완료되었습니다!')
+
+                    }
+                })
+               alert('예약 완료되었습니다!')
+
+           }
+           else{
+               for(key in keys)
+               {
+                   if(keys[key]==0)
+                   {
+
+                   alert(`${key}이 적혀 있지 않습니다!`);
+                   }
+
+               }
+           }
+       }
+       function showReservation () {
+           $.ajax({
+                    type: "GET",
+                    url: "/reservation",
+                    data: {},
+                    success: function (response) {
+                        let reviews = response['all_reservation']
+                        for (let i = 0; i < reviews.length; i++) {
+                            let checkIn = reviews[i]['checkIn']
+                            let checkOut = reviews[i]['checkOut']
+                            let room = reviews[i]['room']
+                            let id = reviews[i]['id']
+
+
+                            let temp_html = `<tr>
+                                                <td>${checkIn}</td>
+                                                <td>${checkOut}</td>
+                                                <td>${room}</td>
+                                                <td>${id}</td>
+                                            </tr>`
+                            $('#reservations-box').append(temp_html)
+                        }
+                    }
+                })
+       }
+    </script>
+</head>
+<body>
+<span>체크인:</span><input type="date" id="checkIn">
+<span>체크아웃:</span><input type="date" id="checkOut">
+<br/>
+<br/>
+<span>객실</span>
+<input type="text" placeholder="객실명(roomName)" id="roomName">
+<br/>
+<br/>
+<span>아이디</span>
+<input type="text" placeholder="아이디(id)" id="id">
+<br/>
+<button onclick="getReady()">완료!</button>
+<button onclick="showReservation()">예약 조회!</button>
+<div id="reservations-box">
+
+</div>
+
+</body>
+</html>
