@@ -11,6 +11,10 @@ db = client.dbsparta
 def home():
     return render_template('index.html')
 
+@app.route('/check')
+def check():
+    return render_template('detail.html')
+
 ## API 역할을 하는 부분
 @app.route('/reservation', methods=['POST'])
 def write_reservation():

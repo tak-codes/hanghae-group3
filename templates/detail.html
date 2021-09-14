@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+<script>
+    $(document).ready(function () {
+
+        showReservation();
+    });
+  function showReservation () {
+
+           $.ajax({
+                    type: "GET",
+                    url: "/reservation",
+                    data: {},
+                    success: function (response) {
+                        let reviews = response['all_reservation']
+                        for (let i = 0; i < reviews.length; i++) {
+                            let checkIn = reviews[i]['checkIn']
+                            let checkOut = reviews[i]['checkOut']
+                            let room = reviews[i]['room']
+                            let id = reviews[i]['id']
+
+
+                            let temp_html = `<tr>
+                                                <td>${checkIn}</td>
+                                                <td>${checkOut}</td>
+                                                <td>${room}</td>
+                                                <td>${id}</td>
+                                            </tr>`
+                            $('#reservations-box').append(temp_html)
+                        }
+                    }
+                })
+       }
+</script>
+
+
+</head>
+<body>
+<div id="reservations-box"></div>
+</body>
+</html>
