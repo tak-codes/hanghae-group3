@@ -18,12 +18,14 @@ def check():
 ## API 역할을 하는 부분
 @app.route('/reservation', methods=['POST'])
 def write_reservation():
+    person_receive= request.form['person_give']
     checkIn_receive = request.form['checkIn_give']
     checkOut_receive = request.form['checkOut_give']
     room_receive = request.form['room_give']
     id_receive = request.form['id_give']
 
     doc = {
+        'person': person_receive,
         'checkIn': checkIn_receive,
         'checkOut': checkOut_receive,
         'room': room_receive,
